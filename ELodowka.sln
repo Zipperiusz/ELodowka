@@ -1,0 +1,22 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ELodowka.Api", "ELodowka.Api\ELodowka.Api.csproj", "{C5E5E1B8-09A9-410F-8ACD-509EBBD3D7DA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ELodowka.Data", "ELodowka.Data\ELodowka.Data.csproj", "{FC78776E-692F-4990-8534-480D95DD5012}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{C5E5E1B8-09A9-410F-8ACD-509EBBD3D7DA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C5E5E1B8-09A9-410F-8ACD-509EBBD3D7DA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C5E5E1B8-09A9-410F-8ACD-509EBBD3D7DA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C5E5E1B8-09A9-410F-8ACD-509EBBD3D7DA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FC78776E-692F-4990-8534-480D95DD5012}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FC78776E-692F-4990-8534-480D95DD5012}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FC78776E-692F-4990-8534-480D95DD5012}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FC78776E-692F-4990-8534-480D95DD5012}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
