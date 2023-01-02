@@ -47,7 +47,8 @@ public class UserService : IUserService
 
     private string CreateStrongPassword(string password)
     {
-        throw new NotImplementedException();
+       // throw new NotImplementedException();
+       return password;
     }
 
     public async Task Update(long id, UserDto data)

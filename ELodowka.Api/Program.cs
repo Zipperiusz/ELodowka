@@ -2,6 +2,8 @@ using Microsoft.EntityFrameworkCore;
 using ELodowka.Api.Common.Profiles;
 using ELodowka.Api.Services;
 using ELodowka.Data;
+using ELodowka.Data.Ingredients;
+using ELodowka.Data.Recipe;
 using ELodowka.Data.User;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -15,6 +17,15 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddAutoMapper(opt => { opt.AddProfile<UserProfile>(); });
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IUserService, UserService>();
+
+builder.Services.AddAutoMapper(opt => { opt.AddProfile<RecipeProfile>(); });
+builder.Services.AddScoped<IRecipeRepository, RecipeRepository>();
+builder.Services.AddScoped<IRecipeService, RecipeService>();
+
+builder.Services.AddAutoMapper(opt => { opt.AddProfile<IngredientProfile>(); });
+builder.Services.AddScoped<IIngredientRepository, IngredientRepository>();
+builder.Services.AddScoped<IIngredientService, IngredientService>();
+
 
 builder.Services.AddDbContext<ApplicationDbContext>(opt => opt
     .UseInMemoryDatabase("Lodowka")    
