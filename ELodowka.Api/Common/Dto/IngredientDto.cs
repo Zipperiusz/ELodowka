@@ -5,5 +5,5 @@ public class IngredientDto
     public int Quantity { get; set; }
     public string Name { get; set; }
     public string Type { get; set; }
-    public RecipeDto RecipeDto { get; set; }
+
 }

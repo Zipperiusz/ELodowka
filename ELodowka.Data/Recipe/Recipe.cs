@@ -1,15 +1,15 @@
 ﻿using ELodowka.Data.Ingredients;
-using Microsoft.EntityFrameworkCore;
+using ELodowka.Data.Step;
 
 namespace ELodowka.Data.Recipe;
 
-[Keyless]
+
 public class Recipe : IEntity
 {
     public long Id { get; set; }
     public string Name { get; set; }
-    public List<string> Steps { get; set; } = new List<string>();
-    public List<string> Timers { get; set; } = new List<string>();
+    public List<Step.Step> Steps { get; set; } = new List<Step.Step>();
+    public List<Timer.Timer> Timers { get; set; } = new List<Timer.Timer>();
     public string ImageURL { get; set; }
     public string OriginalURL { get; set; }
     public List<Ingredient> Ingredients { get; set; } = new List<Ingredient>();
