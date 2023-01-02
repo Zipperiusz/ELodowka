@@ -6,5 +6,6 @@ public class Ingredient : IEntity
     public int Quantity { get; set; }
     public string Name { get; set; }
     public string Type { get; set; }
+    public User.User user { get; set; }
 
 }

@@ -1,9 +1,11 @@
 ﻿using ELodowka.Api.Common.Dto;
 using ELodowka.Api.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ELodowka.Api.Controllers;
 
+[Authorize]
 [ApiController]
 [Route("[controller]")]
 public class RecipeController : ControllerBase

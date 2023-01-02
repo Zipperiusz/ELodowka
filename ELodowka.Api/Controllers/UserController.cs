@@ -21,19 +21,19 @@ public class UserController : ControllerBase
         return await _userService.GetMany();
     }
 
-    [HttpPost]
+    /*[HttpPost]
     public async Task<ActionResult> Add([FromBody] UserDto model)
     {
         await _userService.Add(model);
         return Ok();
-    }
+    }*/
 
-    [HttpPut("{id:long}")]
+    /*[HttpPut("{id:long}")]
     public async Task<ActionResult> Update([FromRoute] long id, [FromBody] UserDto model)
     {
         await _userService.Update(id, model);
         return Ok();
-    }
+    }*/
 
     [HttpGet("{id:long}")]
     public async Task<ActionResult<UserDto>> Get([FromRoute] long id)

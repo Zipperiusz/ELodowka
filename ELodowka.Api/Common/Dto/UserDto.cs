@@ -1,9 +1,11 @@
-﻿namespace ELodowka.Api.Common.Dto;
+﻿using ELodowka.Data.Ingredients;
+using ELodowka.Data.Recipe;
+
+namespace ELodowka.Api.Common.Dto;
 
 public class UserDto
 {
-    public string Name { get; set; }= null!;
-    public string Surname { get; set; }= null!;
-    public string Password { get; set; }= null!;
-    public string Email { get; set; }= null!;
+    public List<Ingredient> IngredientsList { get; set; }
+    public List<Recipe> RecipesList { get; set; }
+    public string Email { get; set; }
 }

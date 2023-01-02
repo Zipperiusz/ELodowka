@@ -23,13 +23,9 @@ public class UserService : IUserService
         return await _userRepository.GetMany<UserDto>();
     }
 
-    public async Task Add(UserDto model)
+    public Task Add(UserDto model)
     {
-        EnsureStrongPassword(model.Password);
-        var entity = _mapper.Map<User>(model);
-
-        entity.Password = CreateStrongPassword(entity.Password);
-        await _userRepository.Add(entity);
+        throw new NotImplementedException();
     }
 
     private void EnsureStrongPassword(string password)

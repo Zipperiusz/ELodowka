@@ -1,25 +1,41 @@
-﻿using AutoMapper;
+﻿using System.Security.Claims;
+using AutoMapper;
 using ELodowka.Api.Common.Dto;
 using ELodowka.Api.Common.Exceptions;
+using ELodowka.Data;
 using ELodowka.Data.Ingredients;
 using ELodowka.Data.Recipe;
+using ELodowka.Data.User;
+using Microsoft.EntityFrameworkCore;
 
 namespace ELodowka.Api.Services;
 
 public class IngredientService : IIngredientService
 {
     private readonly IMapper _mapper;
+    private readonly ApplicationDbContext _context;
     private readonly  IIngredientRepository _ingredientRepository;
+    private readonly IHttpContextAccessor _httpContextAccessor;
 
-    public IngredientService(IMapper mapper, IIngredientRepository ingredientRepository)
+    public IngredientService(IMapper mapper, IIngredientRepository ingredientRepository, ApplicationDbContext context,
+        IHttpContextAccessor httpContextAccessor)
     {
         _mapper = mapper;
         _ingredientRepository = ingredientRepository;
+        _context = context;
+        _httpContextAccessor = httpContextAccessor;
     }
+
+    private int GetUserId() => int.Parse(_httpContextAccessor.HttpContext.User
+        .FindFirstValue(ClaimTypes.NameIdentifier));
 
     public async Task<List<IngredientDto>> GetMany()
     {
-        return await _ingredientRepository.GetMany<IngredientDto>();
+        var response = new ServiceResponse<List<IngredientDto>>();
+        var dbIngredients = await _context.Ingredients
+            .Where(c => c.user.Id == GetUserId()).ToListAsync();
+        response.Data = dbIngredients.Select(c => _mapper.Map<IngredientDto>(c)).ToList();
+        return response.Data;
     }
 
     public async Task Add(IngredientDto model)

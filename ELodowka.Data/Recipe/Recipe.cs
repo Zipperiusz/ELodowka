@@ -13,4 +13,5 @@ public class Recipe : IEntity
     public string ImageURL { get; set; }
     public string OriginalURL { get; set; }
     public List<Ingredient> Ingredients { get; set; } = new List<Ingredient>();
+    public User.User user { get; set; }
 }

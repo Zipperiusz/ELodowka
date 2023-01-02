@@ -1,4 +1,5 @@
 ﻿using ELodowka.Api.Common.Dto;
+using ELodowka.Data.User;
 
 namespace ELodowka.Api.Services;
 

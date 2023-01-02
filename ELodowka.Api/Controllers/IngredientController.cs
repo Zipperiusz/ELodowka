@@ -1,9 +1,13 @@
-﻿using ELodowka.Api.Common.Dto;
+﻿using System.Security.Claims;
+using ELodowka.Api.Common.Dto;
 using ELodowka.Api.Services;
+using ELodowka.Data.User;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ELodowka.Api.Controllers;
 
+[Authorize]
 [ApiController]
 [Route("[controller]")]
 public class IngredientController : ControllerBase
@@ -16,7 +20,7 @@ public class IngredientController : ControllerBase
     }
 
     [HttpGet]
-    public async Task<ActionResult<List<IngredientDto>>> GetMany()
+    public async Task<List<IngredientDto>> GetMany()
     {
         return await _ingredientService.GetMany();
     }
