@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 
-namespace ELodowka.Data.Recipe;
+namespace ELodowka.Data.Recipes;
 
 public class RecipeRepository: BaseRepository<Recipe>, IRecipeRepository
 {

@@ -4,8 +4,7 @@ using ELodowka.Api.Common.Dto;
 using ELodowka.Api.Common.Exceptions;
 using ELodowka.Data;
 using ELodowka.Data.Ingredients;
-using ELodowka.Data.Recipe;
-using ELodowka.Data.User;
+using ELodowka.Data.Users;
 using Microsoft.EntityFrameworkCore;
 
 namespace ELodowka.Api.Services;
@@ -26,14 +25,11 @@ public class IngredientService : IIngredientService
         _httpContextAccessor = httpContextAccessor;
     }
 
-    private int GetUserId() => int.Parse(_httpContextAccessor.HttpContext.User
-        .FindFirstValue(ClaimTypes.NameIdentifier));
 
     public async Task<List<IngredientDto>> GetMany()
     {
         var response = new ServiceResponse<List<IngredientDto>>();
-        var dbIngredients = await _context.Ingredients
-            .Where(c => c.user.Id == GetUserId()).ToListAsync();
+        var dbIngredients = await _context.Ingredients.ToListAsync();
         response.Data = dbIngredients.Select(c => _mapper.Map<IngredientDto>(c)).ToList();
         return response.Data;
     }

@@ -3,8 +3,8 @@ using ELodowka.Api.Common.Profiles;
 using ELodowka.Api.Services;
 using ELodowka.Data;
 using ELodowka.Data.Ingredients;
-using ELodowka.Data.Recipe;
-using ELodowka.Data.User;
+using ELodowka.Data.Recipes;
+using ELodowka.Data.Users;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
@@ -58,8 +58,8 @@ builder.Services.AddScoped<IAuthRepository, AuthRepository>();
 
 
 builder.Services.AddDbContext<ApplicationDbContext>(opt => opt
-    .UseInMemoryDatabase("Lodowka")    
-    // .UseSqlite(@"Data Source=..\baza.db", b => b.MigrationsAssembly("ELodowka.Api"))
+    .UseSqlite(@"Data Source=..\baza.db", b => b.MigrationsAssembly("ELodowka.Api"))
+    //.UseInMemoryDatabase("Lodowka")    
 );
 var app = builder.Build();
 

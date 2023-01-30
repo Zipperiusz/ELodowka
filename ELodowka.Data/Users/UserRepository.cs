@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 
-namespace ELodowka.Data.User;
+namespace ELodowka.Data.Users;
 
 public class UserRepository : BaseRepository<User>, IUserRepository
 {

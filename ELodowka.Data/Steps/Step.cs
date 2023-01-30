@@ -1,6 +1,6 @@
 ﻿
 
-namespace ELodowka.Data.Step;
+namespace ELodowka.Data.Steps;
 
 
 public class Step : IEntity

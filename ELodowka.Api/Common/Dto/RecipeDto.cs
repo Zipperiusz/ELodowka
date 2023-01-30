@@ -1,5 +1,5 @@
-﻿using ELodowka.Data.Step;
-using Timer = ELodowka.Data.Timer.Timer;
+﻿using ELodowka.Data.Steps;
+using Timer = ELodowka.Data.Timers.Timer;
 
 namespace ELodowka.Api.Common.Dto;
 
@@ -10,5 +10,7 @@ public class RecipeDto
     public List<Timer> Timers { get; set; } = new List<Timer>();
     public string ImageURL { get; set; }
     public string OriginalURL { get; set; }
-    public List<IngredientDto> Ingredients { get; set; } = new List<IngredientDto>();
+    public List<long> IngredientsId { get; set; } = new List<long>();
+    public long UserId { get; set; }
+
 }

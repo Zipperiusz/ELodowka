@@ -1,6 +1,7 @@
 ﻿using ELodowka.Data.Ingredients;
+using ELodowka.Data.Recipes;
 
-namespace ELodowka.Data.User;
+namespace ELodowka.Data.Users;
 
 public class User : IEntity
 {
@@ -9,5 +10,5 @@ public class User : IEntity
     public byte[] PasswordSalt { get; set;}
     public string Email { get; set; }
     public List<Ingredient> IngredientsList { get; set; }
-    public List<Recipe.Recipe> RecipesList { get; set; }
+    public List<Recipe> RecipesList { get; set; }
 }

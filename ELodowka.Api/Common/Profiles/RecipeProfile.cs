@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 using ELodowka.Api.Common.Dto;
-using ELodowka.Data.Recipe;
+using ELodowka.Data.Recipes;
 
 namespace ELodowka.Api.Common.Profiles;
 

@@ -1,4 +1,4 @@
-﻿namespace ELodowka.Data.Timer;
+﻿namespace ELodowka.Data.Timers;
 
 public interface ITimerRepository  : IBaseRepository<Timer>
 {

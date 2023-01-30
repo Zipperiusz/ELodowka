@@ -1,7 +1,6 @@
 ﻿using System.Security.Claims;
 using ELodowka.Api.Common.Dto;
 using ELodowka.Api.Services;
-using ELodowka.Data.User;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 

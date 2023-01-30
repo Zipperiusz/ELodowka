@@ -1,6 +1,6 @@
 ﻿
 
-namespace ELodowka.Data.Timer;
+namespace ELodowka.Data.Timers;
 
 
 public class Timer : IEntity

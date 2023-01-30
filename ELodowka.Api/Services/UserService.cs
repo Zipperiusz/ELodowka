@@ -3,7 +3,7 @@ using AutoMapper;
 
 using ELodowka.Api.Common.Dto;
 using ELodowka.Api.Common.Exceptions;
-using ELodowka.Data.User;
+using ELodowka.Data.Users;
 
 namespace ELodowka.Api.Services;
 

@@ -1,5 +1,5 @@
 ﻿using ELodowka.Api.Common.Dto;
-using ELodowka.Data.User;
+using ELodowka.Data.Users;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ELodowka.Api.Controllers;
