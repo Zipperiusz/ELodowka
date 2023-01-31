@@ -1,4 +1,4 @@
-﻿using ELodowka.Api.Common.Dto;
+﻿using ELodowka.Api.Common.DTOs.Users;
 using ELodowka.Api.Services;
 using Microsoft.AspNetCore.Mvc;
 
@@ -47,5 +47,4 @@ public class UserController : ControllerBase
         await _userService.Delete(id);
         return Ok();
     }
-    
 }

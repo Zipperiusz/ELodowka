@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using ELodowka.Api.Common.Dto;
+using ELodowka.Api.Common.DTOs.Users;
 using ELodowka.Data.Users;
 
 namespace ELodowka.Api.Common.Profiles;

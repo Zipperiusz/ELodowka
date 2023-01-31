@@ -1,6 +1,5 @@
-﻿using System.Security.Claims;
-using AutoMapper;
-using ELodowka.Api.Common.Dto;
+﻿using AutoMapper;
+using ELodowka.Api.Common.DTOs.Ingredients;
 using ELodowka.Api.Common.Exceptions;
 using ELodowka.Data;
 using ELodowka.Data.Ingredients;
@@ -11,18 +10,21 @@ namespace ELodowka.Api.Services;
 
 public class IngredientService : IIngredientService
 {
-    private readonly IMapper _mapper;
     private readonly ApplicationDbContext _context;
-    private readonly  IIngredientRepository _ingredientRepository;
-    private readonly IHttpContextAccessor _httpContextAccessor;
+    private readonly IIngredientRepository _ingredientRepository;
+    private readonly IMapper _mapper;
+    private readonly IRequestUserService _requestUserService;
 
-    public IngredientService(IMapper mapper, IIngredientRepository ingredientRepository, ApplicationDbContext context,
-        IHttpContextAccessor httpContextAccessor)
+    public IngredientService(
+        IMapper mapper,
+        IIngredientRepository ingredientRepository,
+        ApplicationDbContext context,
+        IRequestUserService requestUserService)
     {
         _mapper = mapper;
         _ingredientRepository = ingredientRepository;
         _context = context;
-        _httpContextAccessor = httpContextAccessor;
+        _requestUserService = requestUserService;
     }
 
 
@@ -44,7 +46,10 @@ public class IngredientService : IIngredientService
     public async Task Update(long id, IngredientDto data)
     {
         var entity = await _ingredientRepository.Get(id);
-        if (entity == null) throw new NotFoundException();
+        if (entity == null)
+        {
+            throw new NotFoundException();
+        }
 
         entity = _mapper.Map(data, entity);
         await _ingredientRepository.Update(entity);
@@ -54,7 +59,10 @@ public class IngredientService : IIngredientService
     {
         var data = await _ingredientRepository.Get<IngredientDto>(id);
 
-        if (data == null) throw new NotFoundException();
+        if (data == null)
+        {
+            throw new NotFoundException();
+        }
 
         return data;
     }

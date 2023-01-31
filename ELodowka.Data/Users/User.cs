@@ -5,10 +5,9 @@ namespace ELodowka.Data.Users;
 
 public class User : IEntity
 {
-    public long Id { get; set;}
-    public byte[] PasswordHash { get; set; } 
-    public byte[] PasswordSalt { get; set;}
-    public string Email { get; set; }
-    public List<Ingredient> IngredientsList { get; set; }
-    public List<Recipe> RecipesList { get; set; }
+    public byte[] PasswordHash { get; set; } = Array.Empty<byte>();
+    public byte[] PasswordSalt { get; set; } = Array.Empty<byte>();
+    public string Email { get; set; } = default!;
+    public List<Recipe> Recipes { get; set; } = new();
+    public long Id { get; set; }
 }

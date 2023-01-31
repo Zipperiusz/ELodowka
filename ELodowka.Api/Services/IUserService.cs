@@ -1,4 +1,4 @@
-﻿using ELodowka.Api.Common.Dto;
+﻿using ELodowka.Api.Common.DTOs.Users;
 
 namespace ELodowka.Api.Services;
 
@@ -9,5 +9,4 @@ public interface IUserService
     Task Update(long id, UserDto data);
     Task<UserDto> Get(long id);
     Task Delete(long id);
-    
 }

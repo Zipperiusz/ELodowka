@@ -1,6 +1,7 @@
 ﻿namespace ELodowka.Data;
 
-public interface IBaseRepository<TEntity> where TEntity : class, IEntity
+public interface IBaseRepository<TEntity>
+    where TEntity : class, IEntity
 {
     Task<List<TEntity>> GetMany();
     Task<List<TProjectTo>> GetMany<TProjectTo>();
@@ -9,5 +10,4 @@ public interface IBaseRepository<TEntity> where TEntity : class, IEntity
     Task<TEntity> Add(TEntity entity);
     Task<TEntity> Update(TEntity entity);
     Task Delete(long id);
-    
 }

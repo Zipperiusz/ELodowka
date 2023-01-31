@@ -1,4 +1,4 @@
-﻿using ELodowka.Api.Common.Dto;
+﻿using ELodowka.Api.Common.DTOs.Ingredients;
 
 namespace ELodowka.Api.Services;
 

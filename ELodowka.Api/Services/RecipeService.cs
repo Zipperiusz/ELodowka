@@ -1,9 +1,11 @@
-﻿using System.Security.Claims;
-using AutoMapper;
-using ELodowka.Api.Common.Dto;
+﻿using AutoMapper;
+using ELodowka.Api.Common.DTOs;
+using ELodowka.Api.Common.DTOs.Recipes;
 using ELodowka.Api.Common.Exceptions;
 using ELodowka.Data;
+using ELodowka.Data.RecipeIngredients;
 using ELodowka.Data.Recipes;
+using ELodowka.Data.Steps;
 using ELodowka.Data.Users;
 using Microsoft.EntityFrameworkCore;
 
@@ -11,72 +13,36 @@ namespace ELodowka.Api.Services;
 
 public class RecipeService : IRecipeService
 {
-    private readonly IMapper _mapper;
-    private readonly  IRecipeRepository _recipeRepository;
-    private readonly IHttpContextAccessor _httpContextAccessor;
     private readonly ApplicationDbContext _context;
+    private readonly IMapper _mapper;
+    private readonly IRecipeRepository _recipeRepository;
+    private readonly IRequestUserService _requestUserService;
 
-    public RecipeService(IMapper mapper, IRecipeRepository recipeRepository, IHttpContextAccessor httpContextAccessor, ApplicationDbContext context)
+    public RecipeService(
+        IMapper mapper,
+        IRecipeRepository recipeRepository,
+        IRequestUserService requestUserService,
+        ApplicationDbContext context)
     {
         _mapper = mapper;
         _recipeRepository = recipeRepository;
-        _httpContextAccessor = httpContextAccessor;
+        _requestUserService = requestUserService;
         _context = context;
     }
-    
-    private int GetUserId() => int.Parse(_httpContextAccessor.HttpContext.User
-        .FindFirstValue(ClaimTypes.NameIdentifier));
 
     public async Task<List<RecipeDto>> GetMany()
     {
         return await _recipeRepository.GetMany<RecipeDto>();
     }
 
-    public async Task<ServiceResponse<UserDto>> Add(RecipeDto model)
-    {
-
-        ServiceResponse<UserDto> response = new ServiceResponse<UserDto>();
-        try
-        {
-            User user = await _context.Users.FirstOrDefaultAsync(c =>
-                c.Id == model.UserId && c.Id ==
-                int.Parse(_httpContextAccessor.HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier)));
-            if (user == null)
-            {
-                response.Success = false;
-                response.Message = "User not found";
-                return response;
-            }
-
-            model.UserId = user.Id;
-
-        }
-        catch (Exception ex)
-        {
-            response.Success = false;
-            response.Message = ex.Message;
-        }
-        var entity = _mapper.Map<Recipe>(model);
-        
-        await _recipeRepository.Add(entity);
-        
-        return response;
-    }
-
-    public async Task Update(long id, RecipeDto data)
-    {
-        var entity = await _recipeRepository.Get(id);
-        if (entity == null) throw new NotFoundException();
-
-        entity = _mapper.Map(data, entity);
-        await _recipeRepository.Update(entity);
-    }
-
     public async Task<RecipeDto> Get(long id)
     {
         var data = await _recipeRepository.Get<RecipeDto>(id);
 
-        if (data == null) throw new NotFoundException();
+        if (data == null)
+        {
+            throw new NotFoundException();
+        }
 
         return data;
     }
@@ -84,5 +50,86 @@ public class RecipeService : IRecipeService
     public async Task Delete(long id)
     {
         await _recipeRepository.Delete(id);
+    }
+
+    public async Task<ServiceResponse<AddUpdateDto>> Add(RecipeAddDto model)
+    {
+        await using var transaction = await _context.Database.BeginTransactionAsync();
+        try
+        {
+            var entity = _mapper.Map<Recipe>(model);
+            entity.UserId = _requestUserService.GetId();
+            await _recipeRepository.Add(entity);
+            foreach (var ingredient in model.Ingredients)
+            {
+                await _context.RecipeIngredients.AddAsync(
+                    new RecipeIngredient
+                    {
+                        IngredientId = ingredient.Id,
+                        Quantity = ingredient.Quantity,
+                        QuantityType = ingredient.QuantityType,
+                        RecipeId = entity.Id
+                    });
+            }
+
+            await _context.SaveChangesAsync();
+            await transaction.CommitAsync();
+
+            return new ServiceResponse<AddUpdateDto>
+            {
+                Data = new AddUpdateDto
+                {
+                    Id = entity.Id
+                }
+            };
+        }
+        catch
+        {
+            await transaction.RollbackAsync();
+            throw;
+        }
+    }
+
+    public async Task Update(long id, RecipeUpdateDto data)
+    {
+        await using var transaction = await _context.Database.BeginTransactionAsync();
+        try
+        {
+            var entity = await _context.Recipes
+                .Include(recipe => recipe.RecipeIngredients)
+                .Include(recipe => recipe.Steps)
+                .Where(recipe => recipe.Id == id)
+                .FirstOrDefaultAsync();
+            
+            if (entity == null)
+            {
+                throw new NotFoundException();
+            }
+
+            _context.RecipeIngredients.RemoveRange(entity.RecipeIngredients);
+            _context.Steps.RemoveRange(entity.Steps);
+            await _context.SaveChangesAsync();
+            entity = _mapper.Map(data, entity);
+            await _recipeRepository.Update(entity);
+            foreach (var ingredient in data.Ingredients)
+            {
+                await _context.RecipeIngredients.AddAsync(
+                    new RecipeIngredient
+                    {
+                        IngredientId = ingredient.Id,
+                        Quantity = ingredient.Quantity,
+                        QuantityType = ingredient.QuantityType,
+                        RecipeId = entity.Id
+                    });
+            }
+
+            await _context.SaveChangesAsync();
+            await transaction.CommitAsync();
+        }
+        catch
+        {
+            await transaction.RollbackAsync();
+            throw;
+        }
     }
 }

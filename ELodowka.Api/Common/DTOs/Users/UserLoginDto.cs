@@ -1,4 +1,4 @@
-﻿namespace ELodowka.Api.Common.Dto;
+﻿namespace ELodowka.Api.Common.DTOs.Users;
 
 public class UserLoginDto
 {

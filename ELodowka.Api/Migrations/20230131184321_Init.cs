@@ -5,56 +5,23 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace ELodowka.Api.Migrations
 {
-    public partial class NewModels : Migration
+    public partial class Init : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropColumn(
-                name: "Name",
-                table: "Users");
-
-            migrationBuilder.DropColumn(
-                name: "Password",
-                table: "Users");
-
-            migrationBuilder.DropColumn(
-                name: "Surname",
-                table: "Users");
-
-            migrationBuilder.AddColumn<byte[]>(
-                name: "PasswordHash",
-                table: "Users",
-                type: "BLOB",
-                nullable: false,
-                defaultValue: new byte[0]);
-
-            migrationBuilder.AddColumn<byte[]>(
-                name: "PasswordSalt",
-                table: "Users",
-                type: "BLOB",
-                nullable: false,
-                defaultValue: new byte[0]);
-
             migrationBuilder.CreateTable(
-                name: "Recipes",
+                name: "Users",
                 columns: table => new
                 {
                     Id = table.Column<long>(type: "INTEGER", nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
-                    Name = table.Column<string>(type: "TEXT", nullable: false),
-                    ImageURL = table.Column<string>(type: "TEXT", nullable: false),
-                    OriginalURL = table.Column<string>(type: "TEXT", nullable: false),
-                    userId = table.Column<long>(type: "INTEGER", nullable: false)
+                    PasswordHash = table.Column<byte[]>(type: "BLOB", nullable: false),
+                    PasswordSalt = table.Column<byte[]>(type: "BLOB", nullable: false),
+                    Email = table.Column<string>(type: "TEXT", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Recipes", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Recipes_Users_userId",
-                        column: x => x.userId,
-                        principalTable: "Users",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                    table.PrimaryKey("PK_Users", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -63,24 +30,66 @@ namespace ELodowka.Api.Migrations
                 {
                     Id = table.Column<long>(type: "INTEGER", nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
-                    Quantity = table.Column<int>(type: "INTEGER", nullable: false),
                     Name = table.Column<string>(type: "TEXT", nullable: false),
                     Type = table.Column<string>(type: "TEXT", nullable: false),
-                    userId = table.Column<long>(type: "INTEGER", nullable: false),
-                    RecipeId = table.Column<long>(type: "INTEGER", nullable: true)
+                    UserId = table.Column<long>(type: "INTEGER", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Ingredients", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Ingredients_Recipes_RecipeId",
+                        name: "FK_Ingredients_Users_UserId",
+                        column: x => x.UserId,
+                        principalTable: "Users",
+                        principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Recipes",
+                columns: table => new
+                {
+                    Id = table.Column<long>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    Name = table.Column<string>(type: "TEXT", nullable: false),
+                    ImageUrl = table.Column<string>(type: "TEXT", nullable: false),
+                    OriginalUrl = table.Column<string>(type: "TEXT", nullable: false),
+                    UserId = table.Column<long>(type: "INTEGER", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Recipes", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Recipes_Users_UserId",
+                        column: x => x.UserId,
+                        principalTable: "Users",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "RecipeIngredient",
+                columns: table => new
+                {
+                    Id = table.Column<long>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    Quantity = table.Column<int>(type: "INTEGER", nullable: false),
+                    QuantityType = table.Column<string>(type: "TEXT", nullable: false),
+                    RecipeId = table.Column<long>(type: "INTEGER", nullable: false),
+                    IngredientId = table.Column<long>(type: "INTEGER", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_RecipeIngredient", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_RecipeIngredient_Ingredients_IngredientId",
+                        column: x => x.IngredientId,
+                        principalTable: "Ingredients",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_RecipeIngredient_Recipes_RecipeId",
                         column: x => x.RecipeId,
                         principalTable: "Recipes",
-                        principalColumn: "Id");
-                    table.ForeignKey(
-                        name: "FK_Ingredients_Users_userId",
-                        column: x => x.userId,
-                        principalTable: "Users",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -124,19 +133,24 @@ namespace ELodowka.Api.Migrations
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_Ingredients_RecipeId",
+                name: "IX_Ingredients_UserId",
                 table: "Ingredients",
+                column: "UserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_RecipeIngredient_IngredientId",
+                table: "RecipeIngredient",
+                column: "IngredientId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_RecipeIngredient_RecipeId",
+                table: "RecipeIngredient",
                 column: "RecipeId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Ingredients_userId",
-                table: "Ingredients",
-                column: "userId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Recipes_userId",
+                name: "IX_Recipes_UserId",
                 table: "Recipes",
-                column: "userId");
+                column: "UserId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Step_RecipeId",
@@ -152,7 +166,7 @@ namespace ELodowka.Api.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "Ingredients");
+                name: "RecipeIngredient");
 
             migrationBuilder.DropTable(
                 name: "Step");
@@ -161,36 +175,13 @@ namespace ELodowka.Api.Migrations
                 name: "Timer");
 
             migrationBuilder.DropTable(
+                name: "Ingredients");
+
+            migrationBuilder.DropTable(
                 name: "Recipes");
 
-            migrationBuilder.DropColumn(
-                name: "PasswordHash",
-                table: "Users");
-
-            migrationBuilder.DropColumn(
-                name: "PasswordSalt",
-                table: "Users");
-
-            migrationBuilder.AddColumn<string>(
-                name: "Name",
-                table: "Users",
-                type: "TEXT",
-                nullable: false,
-                defaultValue: "");
-
-            migrationBuilder.AddColumn<string>(
-                name: "Password",
-                table: "Users",
-                type: "TEXT",
-                nullable: false,
-                defaultValue: "");
-
-            migrationBuilder.AddColumn<string>(
-                name: "Surname",
-                table: "Users",
-                type: "TEXT",
-                nullable: false,
-                defaultValue: "");
+            migrationBuilder.DropTable(
+                name: "Users");
         }
     }
 }

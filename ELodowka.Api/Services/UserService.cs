@@ -1,7 +1,6 @@
 ﻿using System.Text.RegularExpressions;
 using AutoMapper;
-
-using ELodowka.Api.Common.Dto;
+using ELodowka.Api.Common.DTOs.Users;
 using ELodowka.Api.Common.Exceptions;
 using ELodowka.Data.Users;
 
@@ -28,6 +27,35 @@ public class UserService : IUserService
         throw new NotImplementedException();
     }
 
+    public async Task Update(long id, UserDto data)
+    {
+        var entity = await _userRepository.Get(id);
+        if (entity == null)
+        {
+            throw new NotFoundException();
+        }
+
+        entity = _mapper.Map(data, entity);
+        await _userRepository.Update(entity);
+    }
+
+    public async Task<UserDto> Get(long id)
+    {
+        var data = await _userRepository.Get<UserDto>(id);
+
+        if (data == null)
+        {
+            throw new NotFoundException();
+        }
+
+        return data;
+    }
+
+    public async Task Delete(long id)
+    {
+        await _userRepository.Delete(id);
+    }
+
     private void EnsureStrongPassword(string password)
     {
         if (password.Length < 8)
@@ -43,31 +71,7 @@ public class UserService : IUserService
 
     private string CreateStrongPassword(string password)
     {
-       // throw new NotImplementedException();
-       return password;
+        // throw new NotImplementedException();
+        return password;
     }
-
-    public async Task Update(long id, UserDto data)
-    {
-        var entity = await _userRepository.Get(id);
-        if (entity == null) throw new NotFoundException();
-
-        entity = _mapper.Map(data, entity);
-        await _userRepository.Update(entity);
-    }
-
-    public async Task<UserDto> Get(long id)
-    {
-        var data = await _userRepository.Get<UserDto>(id);
-
-        if (data == null) throw new NotFoundException();
-
-        return data;
-    }
-
-    public async Task Delete(long id)
-    {
-        await _userRepository.Delete(id);
-    }
-    
 }

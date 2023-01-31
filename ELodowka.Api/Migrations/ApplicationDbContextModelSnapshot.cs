@@ -27,26 +27,72 @@ namespace ELodowka.Api.Migrations
                         .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.Property<int>("Quantity")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<long?>("RecipeId")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<string>("Type")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
-                    b.Property<long?>("UserId")
+                    b.Property<int>("Type")
                         .HasColumnType("INTEGER");
 
                     b.HasKey("Id");
 
+                    b.ToTable("Ingredients");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1L,
+                            Name = "Marchewka",
+                            Type = 0
+                        },
+                        new
+                        {
+                            Id = 2L,
+                            Name = "Pomidor",
+                            Type = 0
+                        },
+                        new
+                        {
+                            Id = 3L,
+                            Name = "Cebula",
+                            Type = 0
+                        },
+                        new
+                        {
+                            Id = 4L,
+                            Name = "Szynka",
+                            Type = 1
+                        },
+                        new
+                        {
+                            Id = 5L,
+                            Name = "Kiełbasa śląska",
+                            Type = 1
+                        });
+                });
+
+            modelBuilder.Entity("ELodowka.Data.RecipeIngredients.RecipeIngredient", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<long>("IngredientId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<double>("Quantity")
+                        .HasColumnType("REAL");
+
+                    b.Property<string>("QuantityType")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<long>("RecipeId")
+                        .HasColumnType("INTEGER");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("IngredientId");
+
                     b.HasIndex("RecipeId");
 
-                    b.HasIndex("UserId");
-
-                    b.ToTable("Ingredients");
+                    b.ToTable("RecipeIngredients");
                 });
 
             modelBuilder.Entity("ELodowka.Data.Recipes.Recipe", b =>
@@ -67,15 +113,12 @@ namespace ELodowka.Api.Migrations
                         .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.Property<int>("UserId")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<long>("UserId1")
+                    b.Property<long>("UserId")
                         .HasColumnType("INTEGER");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("UserId1");
+                    b.HasIndex("UserId");
 
                     b.ToTable("Recipes");
                 });
@@ -86,38 +129,21 @@ namespace ELodowka.Api.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
-                    b.Property<string>("OneStep")
+                    b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.Property<long?>("RecipeId")
+                    b.Property<long>("RecipeId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("Time")
                         .HasColumnType("INTEGER");
 
                     b.HasKey("Id");
 
                     b.HasIndex("RecipeId");
 
-                    b.ToTable("Step");
-                });
-
-            modelBuilder.Entity("ELodowka.Data.Timers.Timer", b =>
-                {
-                    b.Property<long>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
-
-                    b.Property<long?>("RecipeId")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<string>("Time")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("RecipeId");
-
-                    b.ToTable("Timer");
+                    b.ToTable("Steps");
                 });
 
             modelBuilder.Entity("ELodowka.Data.Users.User", b =>
@@ -143,22 +169,30 @@ namespace ELodowka.Api.Migrations
                     b.ToTable("Users");
                 });
 
-            modelBuilder.Entity("ELodowka.Data.Ingredients.Ingredient", b =>
+            modelBuilder.Entity("ELodowka.Data.RecipeIngredients.RecipeIngredient", b =>
                 {
-                    b.HasOne("ELodowka.Data.Recipes.Recipe", null)
-                        .WithMany("Ingredients")
-                        .HasForeignKey("RecipeId");
+                    b.HasOne("ELodowka.Data.Ingredients.Ingredient", "Ingredient")
+                        .WithMany("RecipeIngredients")
+                        .HasForeignKey("IngredientId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
-                    b.HasOne("ELodowka.Data.Users.User", null)
-                        .WithMany("IngredientsList")
-                        .HasForeignKey("UserId");
+                    b.HasOne("ELodowka.Data.Recipes.Recipe", "Recipe")
+                        .WithMany("RecipeIngredients")
+                        .HasForeignKey("RecipeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Ingredient");
+
+                    b.Navigation("Recipe");
                 });
 
             modelBuilder.Entity("ELodowka.Data.Recipes.Recipe", b =>
                 {
                     b.HasOne("ELodowka.Data.Users.User", "User")
-                        .WithMany("RecipesList")
-                        .HasForeignKey("UserId1")
+                        .WithMany("Recipes")
+                        .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -167,32 +201,30 @@ namespace ELodowka.Api.Migrations
 
             modelBuilder.Entity("ELodowka.Data.Steps.Step", b =>
                 {
-                    b.HasOne("ELodowka.Data.Recipes.Recipe", null)
+                    b.HasOne("ELodowka.Data.Recipes.Recipe", "Recipe")
                         .WithMany("Steps")
-                        .HasForeignKey("RecipeId");
+                        .HasForeignKey("RecipeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Recipe");
                 });
 
-            modelBuilder.Entity("ELodowka.Data.Timers.Timer", b =>
+            modelBuilder.Entity("ELodowka.Data.Ingredients.Ingredient", b =>
                 {
-                    b.HasOne("ELodowka.Data.Recipes.Recipe", null)
-                        .WithMany("Timers")
-                        .HasForeignKey("RecipeId");
+                    b.Navigation("RecipeIngredients");
                 });
 
             modelBuilder.Entity("ELodowka.Data.Recipes.Recipe", b =>
                 {
-                    b.Navigation("Ingredients");
+                    b.Navigation("RecipeIngredients");
 
                     b.Navigation("Steps");
-
-                    b.Navigation("Timers");
                 });
 
             modelBuilder.Entity("ELodowka.Data.Users.User", b =>
                 {
-                    b.Navigation("IngredientsList");
-
-                    b.Navigation("RecipesList");
+                    b.Navigation("Recipes");
                 });
 #pragma warning restore 612, 618
         }

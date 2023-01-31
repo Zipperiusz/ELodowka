@@ -1,4 +1,4 @@
-﻿using ELodowka.Api.Common.Dto;
+﻿using ELodowka.Api.Common.DTOs.Users;
 using ELodowka.Data.Users;
 using Microsoft.AspNetCore.Mvc;
 
@@ -9,6 +9,7 @@ namespace ELodowka.Api.Controllers;
 public class AuthController : ControllerBase
 {
     private readonly IAuthRepository _authRepository;
+
     public AuthController(IAuthRepository authRepository)
     {
         _authRepository = authRepository;
@@ -25,13 +26,13 @@ public class AuthController : ControllerBase
 
         return Ok(response);
     }
-    
+
     [HttpPost("register")]
     public async Task<ActionResult<ServiceResponse<int>>> Register(UserRegisterDto request)
     {
-        User user = new User();
+        var user = new User();
         user.Email = request.Email;
-        var response = await _authRepository.Register(user,request.Password);
+        var response = await _authRepository.Register(user, request.Password);
         if (!response.Success)
         {
             return BadRequest(response);

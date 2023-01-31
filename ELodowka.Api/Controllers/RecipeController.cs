@@ -1,5 +1,7 @@
-﻿using ELodowka.Api.Common.Dto;
+﻿using ELodowka.Api.Common.DTOs;
+using ELodowka.Api.Common.DTOs.Recipes;
 using ELodowka.Api.Services;
+using ELodowka.Data.Users;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -10,7 +12,7 @@ namespace ELodowka.Api.Controllers;
 [Route("[controller]")]
 public class RecipeController : ControllerBase
 {
-    private readonly  IRecipeService _recipeService;
+    private readonly IRecipeService _recipeService;
 
     public RecipeController(IRecipeService recipeService)
     {
@@ -24,14 +26,13 @@ public class RecipeController : ControllerBase
     }
 
     [HttpPost]
-    public async Task<ActionResult> Add([FromBody] RecipeDto model)
+    public async Task<ActionResult<ServiceResponse<AddUpdateDto>>> Add([FromBody] RecipeAddDto model)
     {
-        await _recipeService.Add(model);
-        return Ok();
+       return  await _recipeService.Add(model);
     }
 
     [HttpPut("{id:long}")]
-    public async Task<ActionResult> Update([FromRoute] long id, [FromBody] RecipeDto model)
+    public async Task<ActionResult> Update([FromRoute] long id, [FromBody] RecipeUpdateDto model)
     {
         await _recipeService.Update(id, model);
         return Ok();
@@ -49,5 +50,4 @@ public class RecipeController : ControllerBase
         await _recipeService.Delete(id);
         return Ok();
     }
-    
 }

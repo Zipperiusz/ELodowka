@@ -1,5 +1,4 @@
-﻿using System.Security.Claims;
-using ELodowka.Api.Common.Dto;
+﻿using ELodowka.Api.Common.DTOs.Ingredients;
 using ELodowka.Api.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -11,7 +10,7 @@ namespace ELodowka.Api.Controllers;
 [Route("[controller]")]
 public class IngredientController : ControllerBase
 {
-    private readonly  IIngredientService _ingredientService;
+    private readonly IIngredientService _ingredientService;
 
     public IngredientController(IIngredientService ingredientService)
     {
@@ -50,5 +49,4 @@ public class IngredientController : ControllerBase
         await _ingredientService.Delete(id);
         return Ok();
     }
-    
 }

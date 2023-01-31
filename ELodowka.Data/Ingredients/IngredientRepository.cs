@@ -1,7 +1,10 @@
-﻿namespace ELodowka.Data.Ingredients;
-using AutoMapper;
+﻿using AutoMapper;
 
-public class IngredientRepository : BaseRepository<Ingredient>, IIngredientRepository
+namespace ELodowka.Data.Ingredients;
+
+public class IngredientRepository
+    : BaseRepository<Ingredient>,
+        IIngredientRepository
 {
     public IngredientRepository(ApplicationDbContext context, IMapper mapper) : base(context, mapper)
     {

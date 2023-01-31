@@ -1,6 +1,5 @@
 ﻿namespace ELodowka.Data.Steps;
 
-public interface IStepRepository  : IBaseRepository<Step>
+public interface IStepRepository : IBaseRepository<Step>
 {
-    
 }

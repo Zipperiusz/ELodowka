@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using AutoMapper.QueryableExtensions;
-using Microsoft.EntityFrameworkCore;
 using ELodowka.Data.Common.Exceptions;
+using Microsoft.EntityFrameworkCore;
 
 namespace ELodowka.Data;
 
@@ -58,11 +58,12 @@ public abstract class BaseRepository<TEntity>
     public async Task Delete(long id)
     {
         var entity = await _context.Users.Where(user => user.Id == id).FirstOrDefaultAsync();
-        if (entity == null) throw new EntityNotFoundException();
+        if (entity == null)
+        {
+            throw new EntityNotFoundException();
+        }
 
         _context.Users.Remove(entity);
         await _context.SaveChangesAsync();
     }
-
-    
 }
