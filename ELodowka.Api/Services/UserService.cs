@@ -22,11 +22,6 @@ public class UserService : IUserService
         return await _userRepository.GetMany<UserDto>();
     }
 
-    public Task Add(UserDto model)
-    {
-        throw new NotImplementedException();
-    }
-
     public async Task Update(long id, UserDto data)
     {
         var entity = await _userRepository.Get(id);
@@ -56,22 +51,5 @@ public class UserService : IUserService
         await _userRepository.Delete(id);
     }
 
-    private void EnsureStrongPassword(string password)
-    {
-        if (password.Length < 8)
-        {
-            // throw exception
-        }
-
-        if (Regex.Match(password, @"[0-9]").Success == false)
-        {
-            // throw exception
-        }
-    }
-
-    private string CreateStrongPassword(string password)
-    {
-        // throw new NotImplementedException();
-        return password;
-    }
+  
 }

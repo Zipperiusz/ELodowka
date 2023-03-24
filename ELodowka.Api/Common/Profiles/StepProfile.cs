@@ -8,6 +8,6 @@ public class StepProfile : Profile
 {
     public StepProfile()
     {
-        CreateMap<StepAddDto, Step>();
+        CreateMap<StepAddDto, Step>().ReverseMap();
     }
 }

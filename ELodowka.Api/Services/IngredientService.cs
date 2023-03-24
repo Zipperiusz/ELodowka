@@ -4,6 +4,7 @@ using ELodowka.Api.Common.Exceptions;
 using ELodowka.Data;
 using ELodowka.Data.Ingredients;
 using ELodowka.Data.Users;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.EntityFrameworkCore;
 
 namespace ELodowka.Api.Services;
@@ -38,6 +39,12 @@ public class IngredientService : IIngredientService
 
     public async Task Add(IngredientDto model)
     {
+        if (model.Name.Length < 3 || model.Name.Length > 255)
+        {
+            throw new ModelErrorException();
+        }
+            
+        
         var entity = _mapper.Map<Ingredient>(model);
 
         await _ingredientRepository.Add(entity);

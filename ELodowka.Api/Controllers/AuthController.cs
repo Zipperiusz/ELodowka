@@ -1,4 +1,6 @@
-﻿using ELodowka.Api.Common.DTOs.Users;
+﻿using System.Text.RegularExpressions;
+using ELodowka.Api.Common.DTOs.Users;
+using ELodowka.Api.Common.Exceptions;
 using ELodowka.Data.Users;
 using Microsoft.AspNetCore.Mvc;
 
@@ -30,6 +32,7 @@ public class AuthController : ControllerBase
     [HttpPost("register")]
     public async Task<ActionResult<ServiceResponse<int>>> Register(UserRegisterDto request)
     {
+        EnsureStrongPassword(request.Password);
         var user = new User();
         user.Email = request.Email;
         var response = await _authRepository.Register(user, request.Password);
@@ -40,4 +43,18 @@ public class AuthController : ControllerBase
 
         return Ok(response);
     }
+    
+    private void EnsureStrongPassword(string password)
+    {
+        if (password.Length < 8)
+        {
+            throw new TooShortPasswordException();
+        }
+
+        if (Regex.Match(password, @"[0-9]").Success == false)
+        {
+            throw new PasswordWithoutNumberException();
+        }
+    }
+
 }
