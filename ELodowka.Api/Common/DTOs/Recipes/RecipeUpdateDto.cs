@@ -10,10 +10,5 @@ public class RecipeUpdateDto
     public List<RecipeIngredientDto> Ingredients { get; set; } = new();
     public List<StepAddDto> Steps { get; set; } = new();
 
-    public class RecipeIngredientDto
-    {
-        public long Id { get; set; }
-        public double Quantity { get; set; }
-        public string QuantityType { get; set; } = default!;
-    }
+    
 }

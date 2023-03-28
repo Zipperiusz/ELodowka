@@ -45,6 +45,31 @@ public class RecipeController : ControllerBase
         });
     }
 
+    [HttpGet]
+    public async Task<ActionResult<ServiceResponse<List<RecipeDto>>>> GetFound([FromRoute] int page, [FromRoute] int itemsPerPage)
+    {
+        var recipes = await _recipeService.GetMany();
+        var totalCount = recipes.Count;
+        var totalPages = (int)Math.Ceiling((double)totalCount / itemsPerPage);
+
+        if (page < 1 || page > totalPages)
+        {
+            return BadRequest("Invalid page number");
+        }
+
+        var skip = (page - 1) * itemsPerPage;
+        var take = itemsPerPage;
+
+        // var result = recipes.Skip(skip).Take(take).Where(x=>x.)
+
+        return Ok(new 
+        {
+            totalPages,
+            totalCount,
+            // result
+        });
+    }
+
     [HttpPost]
     public async Task<ActionResult<ServiceResponse<AddUpdateDto>>> Add([FromBody] RecipeAddDto model)
     {

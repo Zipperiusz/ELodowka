@@ -1,4 +1,5 @@
 ﻿using ELodowka.Api.Common.DTOs.Step;
+using ELodowka.Data.RecipeIngredients;
 using ELodowka.Data.Steps;
 
 namespace ELodowka.Api.Common.DTOs.Recipes;
@@ -10,4 +11,5 @@ public class RecipeDto
     public string ImageURL { get; set; } = default!;
     public string OriginalURL { get; set; } = default!;
     public long UserId { get; set; }
+    public List<RecipeIngredientDto> RecipeIngredientDto { get; set; } = new();
 }

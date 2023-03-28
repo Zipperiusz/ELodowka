@@ -6,6 +6,7 @@ namespace ELodowka.Data.RecipeIngredients;
 
 public class RecipeIngredient : IEntity
 {
+    public long Id { get; set; }
     public double Quantity { get; set; }
     public string QuantityType { get; set; } = default!;
     public long RecipeId { get; set; }
@@ -15,5 +16,4 @@ public class RecipeIngredient : IEntity
 
     [ForeignKey(nameof(IngredientId))] public Ingredient Ingredient { get; set; } = null!;
 
-    public long Id { get; set; }
 }
