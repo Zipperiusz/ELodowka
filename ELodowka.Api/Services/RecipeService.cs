@@ -70,6 +70,12 @@ public class RecipeService : IRecipeService
             var entity = _mapper.Map<Recipe>(model);
             entity.UserId = _requestUserService.GetId();
             await _recipeRepository.Add(entity);
+            var stepId = _context.Steps.Count();
+            foreach (var step in model.Steps)
+            {
+                step.Id = stepId;
+                stepId++;
+            }
             foreach (var ingredient in model.Ingredients)
             {
                 await _context.RecipeIngredients.AddAsync(

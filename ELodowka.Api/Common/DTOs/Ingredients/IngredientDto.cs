@@ -1,5 +1,4 @@
 ﻿namespace ELodowka.Api.Common.DTOs.Ingredients;
-
 public class IngredientDto
 {
     public int Quantity { get; set; }

@@ -41,11 +41,11 @@ public class AuthRepository : IAuthRepository
         return response;
     }
 
-    public async Task<ServiceResponse<string>> Login(string Email, string password)
+    public async Task<ServiceResponse<string>> Login(string email, string password)
     {
         var response = new ServiceResponse<string>();
         var user = await _context.Users.FirstOrDefaultAsync(
-            u => u.Email.ToLower().Equals(Email.ToLower())
+            u => u.Email.ToLower().Equals(email.ToLower())
         );
         if (user == null)
         {
@@ -65,9 +65,9 @@ public class AuthRepository : IAuthRepository
         return response;
     }
 
-    public async Task<bool> UserExists(string Email)
+    public async Task<bool> UserExists(string email)
     {
-        if (await _context.Users.AnyAsync(u => u.Email.ToLower() == Email.ToLower()))
+        if (await _context.Users.AnyAsync(u => u.Email.ToLower() == email.ToLower()))
         {
             return true;
         }

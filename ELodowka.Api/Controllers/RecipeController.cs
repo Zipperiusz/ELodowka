@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace ELodowka.Api.Controllers;
 
-//[Authorize]
+[Authorize]
 [ApiController]
 [Route("[controller]")]
 public class RecipeController : ControllerBase

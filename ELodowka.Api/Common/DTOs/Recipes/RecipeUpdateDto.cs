@@ -9,6 +9,4 @@ public class RecipeUpdateDto
     public string OriginalUrl { get; set; } = default!;
     public List<RecipeIngredientDto> Ingredients { get; set; } = new();
     public List<StepAddDto> Steps { get; set; } = new();
-
-    
 }

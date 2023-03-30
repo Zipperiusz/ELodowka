@@ -10,6 +10,6 @@ public class RecipeDto
     public List<StepDto> Steps { get; set; } = new();
     public string ImageURL { get; set; } = default!;
     public string OriginalURL { get; set; } = default!;
+    public List<RecipeIngredientDto> Ingredients { get; set; } = new();
     public long UserId { get; set; }
-    public List<RecipeIngredientDto> RecipeIngredientDto { get; set; } = new();
 }

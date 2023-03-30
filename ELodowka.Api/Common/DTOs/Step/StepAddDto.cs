@@ -1,7 +1,6 @@
 ﻿namespace ELodowka.Api.Common.DTOs.Step;
 
-public class StepAddDto
+public class StepAddDto : StepDto
 {
-    public string Name { get; set; } = default!;
-    public int Time { get; set; }
+    public long Id { get; set; }
 }
