@@ -25,7 +25,7 @@ public class AuthController : ControllerBase
         {
             return BadRequest(response);
         }
-
+        
         return Ok(response);
     }
 
@@ -34,6 +34,7 @@ public class AuthController : ControllerBase
     {
         EnsureStrongPassword(request.Password);
         var user = new User();
+        user.Name = request.Name;
         user.Email = request.Email;
         var response = await _authRepository.Register(user, request.Password);
         if (!response.Success)

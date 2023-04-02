@@ -59,6 +59,7 @@ public class AuthRepository : IAuthRepository
         }
         else
         {
+            response.Name = user.Name;
             response.Data = CreateToken(user);
         }
 

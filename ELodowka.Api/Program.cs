@@ -75,7 +75,6 @@ builder.Services.AddDbContext<ApplicationDbContext>(
     //.UseInMemoryDatabase("Lodowka")    
 );
 var app = builder.Build();
-
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
