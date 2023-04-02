@@ -76,16 +76,20 @@ public class RecipeService : IRecipeService
                 step.Id = stepId;
                 stepId++;
             }
+            var ingredientCount = _context.Ingredients.Count();
             foreach (var ingredient in model.Ingredients)
             {
+                ingredientCount++;
                 await _context.RecipeIngredients.AddAsync(
                     new RecipeIngredient
                     {
+                        Id = ingredientCount,
                         IngredientId = ingredient.Id,
                         Quantity = ingredient.Quantity,
                         QuantityType = ingredient.QuantityType,
                         RecipeId = entity.Id
                     });
+                
             }
 
             await _context.SaveChangesAsync();

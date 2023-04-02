@@ -44,12 +44,20 @@ public class RecipeController : ControllerBase
             result
         });
     }
-
-    [HttpGet]
-    public async Task<ActionResult<ServiceResponse<List<RecipeDto>>>> GetFound([FromRoute] int page, [FromRoute] int itemsPerPage)
+    
+    [HttpPost("WithIngredients")]
+    public async Task<ActionResult<ServiceResponse<List<RecipeDto>>>> GetRecipesWithAllIngredients([FromBody] List<string> ingredients, [FromQuery]int page, [FromQuery]int itemsPerPage)
     {
         var recipes = await _recipeService.GetMany();
-        var totalCount = recipes.Count;
+        
+        
+        var filteredRecipes = recipes.Where(r =>
+            r.Ingredients.All(i => ingredients.Any(ing => ing.Equals(i.Name, StringComparison.OrdinalIgnoreCase)))
+        );
+
+        
+        var recipeDtos = filteredRecipes.ToList();
+        var totalCount = recipeDtos.Count();
         var totalPages = (int)Math.Ceiling((double)totalCount / itemsPerPage);
 
         if (page < 1 || page > totalPages)
@@ -60,13 +68,24 @@ public class RecipeController : ControllerBase
         var skip = (page - 1) * itemsPerPage;
         var take = itemsPerPage;
 
-        // var result = recipes.Skip(skip).Take(take).Where(x=>x.)
+        var result = recipeDtos
+            .Skip(skip)
+            .Take(take)
+            .Select(r => new RecipeDto
+            {
+                Name = r.Name,
+                Steps = r.Steps,
+                ImageURL = r.ImageURL,
+                OriginalURL = r.OriginalURL,
+                Ingredients = r.Ingredients,
+                UserId = r.UserId
+            });
 
         return Ok(new 
         {
             totalPages,
             totalCount,
-            // result
+            result
         });
     }
 
@@ -76,6 +95,7 @@ public class RecipeController : ControllerBase
         if (model.Name.Length < 2) throw new ModelErrorException();
         if (model.Ingredients.Count < 1) throw new ModelErrorException();
         if (model.Steps.Count < 1) throw new ModelErrorException();
+        
         
        return  await _recipeService.Add(model);
     }
