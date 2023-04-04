@@ -37,6 +37,14 @@ public class IngredientService : IIngredientService
         return response.Data;
     }
 
+    public async Task<List<IngredientListDto>> GetAll()
+    {
+        var response = new ServiceResponse<List<IngredientListDto>>();
+        var dbIngredients = await _context.Ingredients.ToListAsync();
+        response.Data = dbIngredients.Select(c => _mapper.Map<IngredientListDto>(c)).ToList();
+        return response.Data;
+    }
+
     public async Task Add(IngredientDto model)
     {
         if (model.Name.Length < 3 || model.Name.Length > 255)

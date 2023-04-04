@@ -9,5 +9,6 @@ public class IngredientProfile : Profile
     public IngredientProfile()
     {
         CreateMap<Ingredient, IngredientDto>().ReverseMap();
+        CreateMap<Ingredient,IngredientListDto>();
     }
 }

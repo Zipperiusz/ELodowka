@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc.ModelBinding;
 
 namespace ELodowka.Api.Controllers;
 
-[Authorize]
+
 [ApiController]
 [Route("[controller]")]
 public class IngredientController : ControllerBase
@@ -45,6 +45,19 @@ public class IngredientController : ControllerBase
         
     }
 
+    [HttpGet("GetAll")]
+
+    public async Task<ActionResult<List<IngredientListDto>>> GetAll()
+    {
+        var ingredients = await _ingredientService.GetAll();
+        
+        return Ok(new 
+        {
+            ingredients
+        });
+        
+    }
+    
     [HttpPost]
     public async Task<ActionResult> Add([FromBody] IngredientDto model)
     {
