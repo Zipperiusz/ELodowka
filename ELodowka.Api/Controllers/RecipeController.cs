@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace ELodowka.Api.Controllers;
 
-[Authorize]
+
 [ApiController]
 [Route("[controller]")]
 public class RecipeController : ControllerBase
@@ -75,10 +75,11 @@ public class RecipeController : ControllerBase
             {
                 Name = r.Name,
                 Steps = r.Steps,
-                ImageURL = r.ImageURL,
-                OriginalURL = r.OriginalURL,
+                ImageUrl = r.ImageUrl,
+                Description = r.Description,
                 Ingredients = r.Ingredients,
-                UserId = r.UserId
+                UserId = r.UserId,
+                User=r.User
             });
 
         return Ok(new 
@@ -88,7 +89,7 @@ public class RecipeController : ControllerBase
             result
         });
     }
-
+    [Authorize]
     [HttpPost]
     public async Task<ActionResult<ServiceResponse<AddUpdateDto>>> Add([FromBody] RecipeAddDto model)
     {
@@ -99,7 +100,7 @@ public class RecipeController : ControllerBase
         
        return  await _recipeService.Add(model);
     }
-
+    [Authorize]
     [HttpPut("{id:long}")]
     public async Task<ActionResult> Update([FromRoute] long id, [FromBody] RecipeUpdateDto model)
     {

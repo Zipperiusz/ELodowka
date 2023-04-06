@@ -8,6 +8,7 @@ namespace ELodowka.Api.Services;
 public interface IRecipeService
 {
     Task<List<RecipeDto>> GetMany();
+
     Task<List<RecipeDto>> GetFound();
 
     Task<ServiceResponse<AddUpdateDto>> Add(RecipeAddDto model);

@@ -35,7 +35,7 @@ public abstract class BaseRepository<TEntity>
 
     public Task<TProjectTo?> Get<TProjectTo>(long id)
     {
-        return _context.Users.Where(entity => entity.Id == id).ProjectTo<TProjectTo>(_mapper.ConfigurationProvider)
+        return _context.Set<TEntity>().Where(entity => entity.Id == id).ProjectTo<TProjectTo>(_mapper.ConfigurationProvider)
             .FirstOrDefaultAsync();
     }
 
@@ -57,13 +57,13 @@ public abstract class BaseRepository<TEntity>
 
     public async Task Delete(long id)
     {
-        var entity = await _context.Users.Where(user => user.Id == id).FirstOrDefaultAsync();
+        var entity = await _context.Set<TEntity>().Where(entry => entry.Id == id).FirstOrDefaultAsync();
         if (entity == null)
         {
             throw new EntityNotFoundException();
         }
 
-        _context.Users.Remove(entity);
+        _context.Set<TEntity>().Remove(entity);
         await _context.SaveChangesAsync();
     }
 }

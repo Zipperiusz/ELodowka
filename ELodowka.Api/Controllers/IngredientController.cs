@@ -57,7 +57,7 @@ public class IngredientController : ControllerBase
         });
         
     }
-    
+    [Authorize]
     [HttpPost]
     public async Task<ActionResult> Add([FromBody] IngredientDto model)
     {
@@ -68,7 +68,7 @@ public class IngredientController : ControllerBase
         await _ingredientService.Add(model);
         return Ok();
     }
-
+    [Authorize]
     [HttpPut("{id:long}")]
     public async Task<ActionResult> Update([FromRoute] long id, [FromBody] IngredientDto model)
     {

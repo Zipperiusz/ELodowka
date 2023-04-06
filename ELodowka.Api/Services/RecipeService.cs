@@ -35,11 +35,13 @@ public class RecipeService : IRecipeService
         return await _recipeRepository.GetMany<RecipeDto>();
     }
 
+    
+    
+    
+
     public async Task<List<RecipeDto>> GetFound()
     {
         var recipes = await _recipeRepository.GetMany<RecipeDto>();
-
-        
 
         return recipes;
         

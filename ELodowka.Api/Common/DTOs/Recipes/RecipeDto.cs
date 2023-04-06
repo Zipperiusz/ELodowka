@@ -1,15 +1,17 @@
 ﻿using ELodowka.Api.Common.DTOs.Step;
-using ELodowka.Data.RecipeIngredients;
-using ELodowka.Data.Steps;
+using ELodowka.Api.Common.DTOs.Users;
 
 namespace ELodowka.Api.Common.DTOs.Recipes;
 
 public class RecipeDto
 {
+    public long Id { get; set; }
+
     public string Name { get; set; } = default!;
     public List<StepDto> Steps { get; set; } = new();
-    public string ImageURL { get; set; } = default!;
-    public string OriginalURL { get; set; } = default!;
+    public string ImageUrl { get; set; } = default!;
+    public string Description { get; set; } = default!;
     public List<RecipeIngredientDto> Ingredients { get; set; } = new();
     public long UserId { get; set; }
+    public UserRecipeDto User { get; set; } = null!;
 }

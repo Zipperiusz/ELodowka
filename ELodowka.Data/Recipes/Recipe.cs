@@ -10,7 +10,7 @@ public class Recipe : IEntity
     public string Name { get; set; } = default!;
     public List<Step> Steps { get; set; } = new();
     public string ImageUrl { get; set; } = default!;
-    public string OriginalUrl { get; set; } = default!;
+    public string Description { get; set; } = default!;
     public long UserId { get; set; }
 
     public List<RecipeIngredient> RecipeIngredients { get; set; } = new();
