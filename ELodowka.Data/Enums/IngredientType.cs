@@ -3,5 +3,9 @@
 public enum IngredientType
 {
     Vegetable,
-    Meat
+    Meat,
+    Dairy,
+    Bread,
+    Pasta,
+    Spices,
 }
