@@ -8,4 +8,11 @@ public enum IngredientType
     Bread,
     Pasta,
     Spices,
+    Grain,
+    Dips,
+    Oils,
+    Mushroom,
+    Fruits,
+    Fish,
+    delicatessen,
 }

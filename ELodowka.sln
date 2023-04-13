@@ -1,5 +1,8 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.31727.386
+MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ELodowka.Api", "ELodowka.Api\ELodowka.Api.csproj", "{C5E5E1B8-09A9-410F-8ACD-509EBBD3D7DA}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ELodowka.Data", "ELodowka.Data\ELodowka.Data.csproj", "{FC78776E-692F-4990-8534-480D95DD5012}"
@@ -18,5 +21,11 @@ Global
 		{FC78776E-692F-4990-8534-480D95DD5012}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FC78776E-692F-4990-8534-480D95DD5012}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FC78776E-692F-4990-8534-480D95DD5012}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {CD04DB1C-389C-4BFA-8A28-7B93F7C2C082}
 	EndGlobalSection
 EndGlobal
