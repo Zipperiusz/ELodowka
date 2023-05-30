@@ -69,11 +69,10 @@ builder.Services.AddAutoMapper(
         opt.AddProfile<StepProfile>();
     });
 
-// var conn = "server=db.zut.edu.pl;user=md#####;password=########;database=md#####"; Przerzucić dane logowania do pliku env
 builder.Services.AddDbContext<ApplicationDbContext>(
     opt => opt
-        // .UseMySql(conn,new MariaDbServerVersion(new Version(5,5,68)),b => b.MigrationsAssembly("ELodowka.Api"))
-        .UseSqlite(@"Data Source=..\baza.db", b => b.MigrationsAssembly("ELodowka.Api"))
+        .UseMySql(conn,new MariaDbServerVersion(new Version(5,5,68)),b => b.MigrationsAssembly("ELodowka.Api"))
+        // .UseSqlite(@"Data Source=..\baza.db", b => b.MigrationsAssembly("ELodowka.Api"))
     //.UseInMemoryDatabase("Lodowka")    
 );
 var app = builder.Build();
