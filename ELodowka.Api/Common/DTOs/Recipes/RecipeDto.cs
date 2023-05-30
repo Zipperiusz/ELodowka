@@ -12,6 +12,6 @@ public class RecipeDto
     public string ImageUrl { get; set; } = default!;
     public string Description { get; set; } = default!;
     public List<RecipeIngredientDto> Ingredients { get; set; } = new();
-    public long UserId { get; set; }
+
     public UserRecipeDto User { get; set; } = null!;
 }

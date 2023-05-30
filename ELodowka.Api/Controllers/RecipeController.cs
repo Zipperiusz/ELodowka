@@ -78,7 +78,7 @@ public class RecipeController : ControllerBase
                 ImageUrl = r.ImageUrl,
                 Description = r.Description,
                 Ingredients = r.Ingredients,
-                UserId = r.UserId,
+
                 User=r.User
             });
 
