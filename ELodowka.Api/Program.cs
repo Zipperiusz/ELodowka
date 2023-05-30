@@ -71,7 +71,7 @@ builder.Services.AddAutoMapper(
 
 builder.Services.AddDbContext<ApplicationDbContext>(
     opt => opt
-        .UseMySql(conn,new MariaDbServerVersion(new Version(5,5,68)),b => b.MigrationsAssembly("ELodowka.Api"))
+        .UseMySql(builder.Configuration.GetSection("AppSettings:ConnectionString").Value,new MariaDbServerVersion(new Version(5,5,68)),b => b.MigrationsAssembly("ELodowka.Api"))
         // .UseSqlite(@"Data Source=..\baza.db", b => b.MigrationsAssembly("ELodowka.Api"))
     //.UseInMemoryDatabase("Lodowka")    
 );
