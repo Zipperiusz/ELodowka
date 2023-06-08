@@ -73,6 +73,7 @@ public class RecipeController : ControllerBase
             .Take(take)
             .Select(r => new RecipeDto
             {
+                Id=r.Id,
                 Name = r.Name,
                 Steps = r.Steps,
                 ImageUrl = r.ImageUrl,
