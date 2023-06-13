@@ -10,6 +10,7 @@ public interface IRecipeService
     Task<List<RecipeDto>> GetMany();
 
     Task<List<RecipeDto>> GetFound();
+    Task<List<RecipeDto>> GetUserRecipes();
 
     Task<ServiceResponse<AddUpdateDto>> Add(RecipeAddDto model);
     Task Update(long id, RecipeUpdateDto data);

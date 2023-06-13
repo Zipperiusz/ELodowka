@@ -35,7 +35,12 @@ public class RecipeService : IRecipeService
         return await _recipeRepository.GetMany<RecipeDto>();
     }
 
-    
+    public async Task<List<RecipeDto>> GetUserRecipes()
+    {
+        var recipes = await _recipeRepository.GetMany<RecipeDto>();
+        var userEmail = _requestUserService.GetEmail();
+        return recipes.Where(r => r.User.Email == userEmail).ToList();
+    }
     
     
 

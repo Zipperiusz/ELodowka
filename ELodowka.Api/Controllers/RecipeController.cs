@@ -8,16 +8,18 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace ELodowka.Api.Controllers;
 
-
 [ApiController]
 [Route("[controller]")]
 public class RecipeController : ControllerBase
 {
     private readonly IRecipeService _recipeService;
+    private readonly IRequestUserService _requestUserService;
 
-    public RecipeController(IRecipeService recipeService)
+
+    public RecipeController(IRecipeService recipeService, IRequestUserService requestUserService)
     {
         _recipeService = recipeService;
+        _requestUserService = requestUserService;
     }
 
     [HttpGet("{page:int}/{itemsPerPage:int}")]
@@ -37,25 +39,39 @@ public class RecipeController : ControllerBase
 
         var result = recipes.Skip(skip).Take(take).ToList();
 
-        return Ok(new 
-        {
-            totalPages,
-            totalCount,
-            result
-        });
+        return Ok(
+            new
+            {
+                totalPages,
+                totalCount,
+                result
+            });
     }
-    
+    [Authorize]
+    [HttpPost("UserRecipes")]
+    public async Task<ActionResult<List<RecipeDto>>> GetUserRecipes()
+    {
+        var recipes = await _recipeService.GetUserRecipes();
+
+        return Ok(
+            recipes);
+    }
+
     [HttpPost("WithIngredients")]
-    public async Task<ActionResult<ServiceResponse<List<RecipeDto>>>> GetRecipesWithAllIngredients([FromBody] List<string> ingredients, [FromQuery]int page, [FromQuery]int itemsPerPage)
+    public async Task<ActionResult<ServiceResponse<List<RecipeDto>>>> GetRecipesWithAllIngredients(
+        [FromBody] List<string> ingredients,
+        [FromQuery] int page,
+        [FromQuery] int itemsPerPage)
     {
         var recipes = await _recipeService.GetMany();
-        
-        
-        var filteredRecipes = recipes.Where(r =>
-            r.Ingredients.All(i => ingredients.Any(ing => ing.Equals(i.Name, StringComparison.OrdinalIgnoreCase)))
+
+
+        var filteredRecipes = recipes.Where(
+            r =>
+                r.Ingredients.All(i => ingredients.Any(ing => ing.Equals(i.Name, StringComparison.OrdinalIgnoreCase)))
         );
 
-        
+
         var recipeDtos = filteredRecipes.ToList();
         var totalCount = recipeDtos.Count();
         var totalPages = (int)Math.Ceiling((double)totalCount / itemsPerPage);
@@ -71,25 +87,28 @@ public class RecipeController : ControllerBase
         var result = recipeDtos
             .Skip(skip)
             .Take(take)
-            .Select(r => new RecipeDto
+            .Select(
+                r => new RecipeDto
+                {
+                    Id = r.Id,
+                    Name = r.Name,
+                    Steps = r.Steps,
+                    ImageUrl = r.ImageUrl,
+                    Description = r.Description,
+                    Ingredients = r.Ingredients,
+
+                    User = r.User
+                });
+
+        return Ok(
+            new
             {
-                Id=r.Id,
-                Name = r.Name,
-                Steps = r.Steps,
-                ImageUrl = r.ImageUrl,
-                Description = r.Description,
-                Ingredients = r.Ingredients,
-
-                User=r.User
+                totalPages,
+                totalCount,
+                result
             });
-
-        return Ok(new 
-        {
-            totalPages,
-            totalCount,
-            result
-        });
     }
+
     [Authorize]
     [HttpPost]
     public async Task<ActionResult<ServiceResponse<AddUpdateDto>>> Add([FromBody] RecipeAddDto model)
@@ -97,10 +116,11 @@ public class RecipeController : ControllerBase
         if (model.Name.Length < 2) throw new ModelErrorException();
         if (model.Ingredients.Count < 1) throw new ModelErrorException();
         if (model.Steps.Count < 1) throw new ModelErrorException();
-        
-        
-       return  await _recipeService.Add(model);
+
+
+        return await _recipeService.Add(model);
     }
+
     [Authorize]
     [HttpPut("{id:long}")]
     public async Task<ActionResult> Update([FromRoute] long id, [FromBody] RecipeUpdateDto model)

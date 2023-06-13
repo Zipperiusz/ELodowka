@@ -30,9 +30,10 @@ public class RequestUserService : IRequestUserService
         return new LoggedUserData
         {
             Id = GetId(),
-            Email = GetName()
+            Email = GetEmail()
         };
     }
+    
 
     public long GetId()
     {
@@ -44,7 +45,7 @@ public class RequestUserService : IRequestUserService
         );
     }
 
-    public string GetName()
+    public string GetEmail()
     {
         return
             _httpContextAccessor.HttpContext!.User.Claims
